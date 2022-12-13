@@ -2,8 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace SlimeRpg
-{
+
     public class StartGame : MonoBehaviour
     {
         [SerializeField] private LoadScene loadScene;
@@ -12,5 +11,5 @@ namespace SlimeRpg
             loadScene.StartGame();
         }
     }
-}
+
 

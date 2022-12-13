@@ -189,6 +189,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &311750635 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6214069186278944461, guid: 2ed6171430f4e264aa2d47b1165cda32,
+    type: 3}
+  m_PrefabInstance: {fileID: 4902091080061503410}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11879204c638ef64f9867041d3723f61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -384,6 +396,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: Canvas
       objectReference: {fileID: 0}
+    - target: {fileID: 648556647197000435, guid: 2ed6171430f4e264aa2d47b1165cda32,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1719999207731446681, guid: 2ed6171430f4e264aa2d47b1165cda32,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 311750635}
+    - target: {fileID: 1719999207731446681, guid: 2ed6171430f4e264aa2d47b1165cda32,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnPlayGame
+      objectReference: {fileID: 0}
+    - target: {fileID: 1719999207731446681, guid: 2ed6171430f4e264aa2d47b1165cda32,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: CanvasController, Assembly-CSharp
+      objectReference: {fileID: 0}
     - target: {fileID: 1743075431076306849, guid: 2ed6171430f4e264aa2d47b1165cda32,
         type: 3}
       propertyPath: m_Pivot.x
@@ -488,6 +520,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3164426277899457232, guid: 2ed6171430f4e264aa2d47b1165cda32,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2ed6171430f4e264aa2d47b1165cda32, type: 3}

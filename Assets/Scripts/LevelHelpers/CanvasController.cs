@@ -5,9 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
 
-namespace SlimeRpg
-{
-    public class CanvasController : MonoBehaviour
+  public class CanvasController : MonoBehaviour
     {
         [Header("Panels")]
         [SerializeField] private GameObject mainMenu;
@@ -15,34 +13,37 @@ namespace SlimeRpg
         [SerializeField] private GameObject win;
         [SerializeField] private GameObject lost;
    
-
-   
-        int numLevel;
-        GameManager gameManager;
+        GameManager _gameManager;
 
         [Inject]
         private void Init(GameManager manager)
         {
-            gameManager = manager;
-            gameManager.OnLevelStart += OnLevelStart;
-            gameManager.OnLateWin += OnLevelWin;
-            gameManager.OnLateLost += OnLevelLost;
+            _gameManager = manager;
+           // _gameManager.OnLevelStart += OnLevelStart;
+            
+            _gameManager.OnLateWin += OnLevelWin;
+            _gameManager.OnLateLost += OnLevelLost;
         }
 
-   
+        public void OnPlayGame()
+        { 
+            _gameManager.PlayGame();
+            FalsePanels(); 
+           inGame.SetActive(true);
+         
+        }
+
 
         private void Start()
         {
-            FalsePanels();
-            numLevel = gameManager.loadScene.numScene;
+            FalsePanels(); 
             mainMenu.SetActive(true);
-      
         }
 
         private void OnLevelStart()
         {
             FalsePanels(); 
-            inGame.SetActive(true);
+            mainMenu.SetActive(true);
         }
 
         private void OnLevelWin()
@@ -63,11 +64,11 @@ namespace SlimeRpg
   
         public void LoadNextLevel()
         {
-            gameManager.LoadNextLevel(); 
+            _gameManager.LoadNextLevel(); 
         }
         public void LevelStart()
         {
-            gameManager.LevelStart();
+            _gameManager.LevelStart();
         }
 
         private void FalsePanels()
@@ -82,9 +83,9 @@ namespace SlimeRpg
 
         public void RestartGame()
         {
-            gameManager.RestartScene();
+            _gameManager.RestartScene();
         }
 
     }
 
-}
+

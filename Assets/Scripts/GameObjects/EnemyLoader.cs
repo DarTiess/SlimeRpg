@@ -18,13 +18,15 @@ public class EnemyLoader : MonoBehaviour
     [SerializeField] private float generateTimer;
   
     float timer = 0;
-    private GameObject _player;
+    private Player _player;
+    private Money _money;
 
     private bool _canPush;
     [Inject]
-    private void Initialization(Player playerObj)
+    private void Initialization(Player playerObj, Money moneyObj)
     {
-        _player = playerObj.gameObject;
+        _player = playerObj;
+        _money = moneyObj;
     }
     // Start is called before the first frame update
     void Start()
@@ -39,7 +41,7 @@ public class EnemyLoader : MonoBehaviour
             Enemy enemy = Instantiate(enemyPrefab, transform.position, transform.rotation);
             enemy.gameObject.SetActive(false); 
            
-            enemy.InitializeEnemy(_player, speed);
+            enemy.InitializeEnemy(_player, _money);
             _enemyList.Add(enemy);
 
         }

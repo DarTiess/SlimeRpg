@@ -14,7 +14,7 @@ public class EnvironementLoader : MonoBehaviour
 
     [Inject]
 
-    private void Initialize(EnemyLoader loader, NavMeshSettings navMesh)
+    private void InitiallizeComponent(EnemyLoader loader, NavMeshSettings navMesh)
     {
         _enemyLoader= loader;
         _navMeshSettings= navMesh;

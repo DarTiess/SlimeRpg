@@ -14,7 +14,7 @@ public class Environement : MonoBehaviour
 
     [Inject]
 
-    private void Init(EnvironementLoader loader)
+    private void InitiallizeComponent(EnvironementLoader loader)
     {
        _environementLoader= loader;
     }

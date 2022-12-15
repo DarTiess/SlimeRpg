@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using Zenject;
+
 
 [RequireComponent(typeof(NavMeshAgent))]
 [RequireComponent(typeof(HealthBar))]
@@ -11,11 +11,12 @@ public class Enemy : MonoBehaviour
     private NavMeshAgent _navMesh;
     private HealthBar healthBar;
     private Player player;
-    private Money money;
+    private PlayerState money;
     private bool _canMove;
 
     [SerializeField]
     private int health;
+    private int startHealth;
     [SerializeField]
     private int payment;
     [SerializeField]
@@ -30,8 +31,9 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    public void InitializeEnemy(Player playerObj, Money moneyObj)
+    public void InitializeEnemy(Player playerObj, PlayerState moneyObj)
     {
+        startHealth = health;
         player=playerObj;
         money=moneyObj;
         _navMesh= GetComponent<NavMeshAgent>();
@@ -39,10 +41,13 @@ public class Enemy : MonoBehaviour
     }
 
     public void PushEnemy()
-    {
+    {   
+        health = startHealth;
         healthBar.SetOnSlider();
         healthBar.SetMaxValus(health);
         _canMove=true;
+     
+        gameObject.tag = "Enemy";
         _navMesh.isStopped = false;
     }
 
@@ -58,7 +63,7 @@ public class Enemy : MonoBehaviour
 
     IEnumerator DeadEnemy()
     {
-        yield return new WaitForSeconds(0.5f); 
+        yield return new WaitForSeconds(0.2f); 
         player.StartMove();
         gameObject.SetActive(false);
     }
@@ -67,14 +72,12 @@ public class Enemy : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Ball"))
         {
-            Debug.Log("Ball");
             splashEffect.transform.position=collision.transform.position;
             splashEffect.Play();
         }
 
         if (collision.gameObject.CompareTag("Player"))
         {
-            Debug.Log("Player collis");
             player.TakeDamage(makeDamage, gameObject.transform);
         }
     }

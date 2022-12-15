@@ -57,4 +57,15 @@ public class HealthBar : MonoBehaviour
 
 
     }
+
+    public void UpgradeValue(float value, float time)
+    {
+        float updatedValue = valueProgress + value;
+        if (updatedValue > slider.maxValue)
+        {
+            slider.maxValue = updatedValue;
+        }
+        valueProgress += value;
+        slider.DOValue(valueProgress, time);
+    }
 }

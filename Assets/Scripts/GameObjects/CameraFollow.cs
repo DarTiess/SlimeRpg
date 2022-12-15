@@ -15,7 +15,7 @@ public class CameraFollow : MonoBehaviour
 
     [Inject]
 
-    private void Initialize(Player playerObj)
+    private void InitiallizeComponent(Player playerObj)
     {
         player = playerObj.gameObject;
     }

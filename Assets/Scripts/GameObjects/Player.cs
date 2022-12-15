@@ -17,7 +17,11 @@ using Random = UnityEngine.Random;
 
         private float xPos;
         [Header("Pushing Balls Settings")]
-        [SerializeField] private GameObject ball;
+        [SerializeField] private GameObject ballPref;
+        [SerializeField]
+        private int countBalls;
+        private List<GameObject> ballList=new List<GameObject>();
+        private int indexBall = 0;
         [SerializeField] private Transform pushBallPoint;
         private bool isOnAtack;
         [SerializeField]
@@ -32,18 +36,26 @@ using Random = UnityEngine.Random;
       [Header("Attack Settings")]
       [SerializeField]
       private int attackPower;
+      [SerializeField]
+      private float radiusDetectEnemy;
       [Header("Health")]
       [SerializeField]
       private int health;
+      private int HpNum {
+          get { return PlayerPrefs.GetInt("Health"); }
+          set { PlayerPrefs.SetInt("Health", value); }
+      }
         private PlayerAnimator _playerAnimator;
         private HealthBar _healthBar;
        
         private GameManager _gameManager;
+        private PlayerState _playerState;
 
         [Inject]
-        private void Init(GameManager manager)
+        private void InitiallizeComponent(GameManager manager, PlayerState state)
         {
             _gameManager = manager;
+            _playerState = state;
             _gameManager.OnPlayGame+= StartMove;
         }
 
@@ -52,6 +64,18 @@ using Random = UnityEngine.Random;
         // Start is called before the first frame update
         void Start()
         {
+            if (HpNum <= 0)
+            {
+                HpNum = health;
+            }
+            else
+            {
+                health = HpNum;
+            }
+
+            SetBallToStack();
+            _playerState.SetHealthValue(HpNum);
+            _playerState.SetAttackValue(attackPower);
             _healthBar=GetComponent<HealthBar>();
             _playerAnimator= GetComponent<PlayerAnimator>();   
          //   _steep = 1f / _countSteepMagnet;
@@ -59,7 +83,17 @@ using Random = UnityEngine.Random;
             xPos = transform.position.z;
             _healthBar.SetMaxValus(health);
         }
-       
+
+        private void SetBallToStack()
+        {
+            for (int i = 0; i < countBalls; i++)
+            {
+               GameObject ball = Instantiate(ballPref,pushBallPoint.transform.position,pushBallPoint.transform.rotation);
+               ball.transform.parent= transform;
+                ball.gameObject.SetActive(false);
+               ballList.Add(ball);
+            }
+        }
         public void StartMove()
         {
          canMove=true;
@@ -69,7 +103,7 @@ using Random = UnityEngine.Random;
         // Update is called once per frame
         void Update()
         {
-            AttackEnemy(gameObject.transform.position, 4f);
+            AttackEnemy(gameObject.transform.position, radiusDetectEnemy);
             if (canMove)
             {
                 _playerAnimator.MoveAnimation();
@@ -111,52 +145,29 @@ using Random = UnityEngine.Random;
         {
            // StartCoroutine(Pushing(target,_countSteepMagnet, _steep, _changeY,_timeInSteep));
         
-            ball.transform.position =pushBallPoint.position; 
-            ball.transform.parent = gameObject.transform;
-            ball.SetActive(true);
-            ball.transform.DOJump(target.position, jumpForce, 1, jumpDuration).OnComplete(() =>
+            ballList[indexBall].transform.position =pushBallPoint.position; 
+            ballList[indexBall].transform.parent = gameObject.transform;
+            ballList[indexBall].SetActive(true);
+            ballList[indexBall].transform.DOJump(target.position, jumpForce, 1, jumpDuration).OnComplete(() =>
             {
                 target.gameObject.GetComponent<Enemy>().TakeDamage(attackPower);
-                ball.transform.position = target.transform.position;
-                ball.transform.parent = target.transform;
-                ball.SetActive(false);
+                ballList[indexBall].transform.position = target.transform.position;
+                ballList[indexBall].transform.parent = target.transform;
+                ballList[indexBall].SetActive(false);
                 isOnAtack = false;
+                indexBall++;
+                if (indexBall >= ballList.Count)
+                {
+                    indexBall = 0;
+                }
             });
-        }
-
-
-       
-
-        private IEnumerator Pushing(Transform destin, int _countSteepMagnet, float _steep, AnimationCurve _changeY, float _timeInSteep)
-        {
-            ball.transform.position =pushBallPoint.position; 
-            ball.transform.parent = gameObject.transform;
-            ball.SetActive(true);
-           
-            for (int i = 0; i <= _countSteepMagnet; i++)
-            {
-
-                Vector3 pos = Vector3.Lerp(ball.transform.position, destin.transform.position, i * _steep);;
-                pos.y += _changeY.Evaluate(i * _steep);
-                ball.transform.position = pos;
-
-                ball.transform.rotation = Quaternion.Lerp(ball.transform.rotation, destin.transform.rotation, i * _steep);
-
-
-                yield return new WaitForSeconds(_timeInSteep);
-
-            }
-
-            destin.gameObject.GetComponent<Enemy>().TakeDamage(attackPower);
-            ball.transform.position = destin.transform.position;
-            ball.transform.parent = destin.transform;
-          ball.SetActive(false);
-          isOnAtack= false;
         }
 
         public void TakeDamage(int damage, Transform enemy)
         {
             health -= damage;
+            HpNum = health;
+            _playerState.DamageHP(damage);
             int rndDamage=Random.Range(1, 4);
             _playerAnimator.TakeDamage(rndDamage);
             _healthBar.SetValues(damage, 0.4f);
@@ -173,6 +184,24 @@ using Random = UnityEngine.Random;
             gameObject.GetComponent<Rigidbody>().AddForce(awayFly * 70, ForceMode.Impulse);
         }
 
+        public void UpgradeHP(int hp)
+        {
+            health+=hp;
+            HpNum = health;
+            _playerState.AddHP(hp);
+            _healthBar.UpgradeValue(hp, 0.3f);
+        } 
+        
+        public void UpgradeAttackPower(int power)
+        {
+            attackPower+=power;
+            
+            _playerState.AddAttack(power);
+        } 
+        public void UpgradeSpeedAttack(int speed)
+        {
+           jumpDuration-=speed/100f;
+        }
     }
 
 

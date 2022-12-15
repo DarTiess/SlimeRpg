@@ -9,7 +9,7 @@ public class EnemyLoader : MonoBehaviour
     [SerializeField]
     private int enemyCount;
     [SerializeField]
-    private Enemy enemyPrefab;
+    private List<Enemy> enemyPrefab;
     private List<Enemy> _enemyList=new List<Enemy>();
     private int _indexEnemy = 0;
     [SerializeField]
@@ -17,13 +17,13 @@ public class EnemyLoader : MonoBehaviour
   
     [SerializeField] private float generateTimer;
   
-    float timer = 0;
+    float timer;
     private Player _player;
-    private Money _money;
+    private PlayerState _money;
 
     private bool _canPush;
     [Inject]
-    private void Initialization(Player playerObj, Money moneyObj)
+    private void InitiallizeComponent(Player playerObj, PlayerState moneyObj)
     {
         _player = playerObj;
         _money = moneyObj;
@@ -36,15 +36,25 @@ public class EnemyLoader : MonoBehaviour
 
     private void InitiallizeEnemyList()
     {
+       
         for (int i = 0; i < enemyCount; i++)
-        {
-            Enemy enemy = Instantiate(enemyPrefab, transform.position, transform.rotation);
+        { 
+            int indPref = 0;
+
+            if (i > 2)
+            {
+                indPref = Random.Range(0,enemyPrefab.Count);
+            }
+
+            Enemy enemy = Instantiate(enemyPrefab[indPref], transform.position, transform.rotation);
             enemy.gameObject.SetActive(false); 
            
             enemy.InitializeEnemy(_player, _money);
             _enemyList.Add(enemy);
 
         }
+
+        timer = generateTimer;
         _canPush= true;
         return;
     }

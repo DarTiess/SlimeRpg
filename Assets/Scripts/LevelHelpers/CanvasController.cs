@@ -16,7 +16,7 @@ using Zenject;
         GameManager _gameManager;
 
         [Inject]
-        private void Init(GameManager manager)
+        private void InitiallizeComponent(GameManager manager)
         {
             _gameManager = manager;
            // _gameManager.OnLevelStart += OnLevelStart;

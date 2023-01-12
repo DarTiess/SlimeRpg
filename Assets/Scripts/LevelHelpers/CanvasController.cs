@@ -1,8 +1,4 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using Zenject;
 
   public class CanvasController : MonoBehaviour
@@ -18,9 +14,7 @@ using Zenject;
         [Inject]
         private void InitiallizeComponent(GameManager manager)
         {
-            _gameManager = manager;
-           // _gameManager.OnLevelStart += OnLevelStart;
-            
+            _gameManager = manager;                 
             _gameManager.OnLateWin += OnLevelWin;
             _gameManager.OnLateLost += OnLevelLost;
         }
@@ -29,11 +23,8 @@ using Zenject;
         { 
             _gameManager.PlayGame();
             FalsePanels(); 
-           inGame.SetActive(true);
-         
+           inGame.SetActive(true);         
         }
-
-
         private void Start()
         {
             FalsePanels(); 
@@ -51,8 +42,7 @@ using Zenject;
             Debug.Log("Level Win");
        
             FalsePanels();
-            win.SetActive(true);
-       
+            win.SetActive(true);       
         }
 
         private void OnLevelLost()
@@ -77,9 +67,7 @@ using Zenject;
             inGame.SetActive(false);
             win.SetActive(false);
             lost.SetActive(false);
-        }
-
- 
+        } 
 
         public void RestartGame()
         {

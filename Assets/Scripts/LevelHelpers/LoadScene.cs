@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -21,13 +20,10 @@ public class LoadScene : ScriptableObject
         }
        
         Loading();
-        
-
     }
 
     public void LoadNextLevel()
     {
-       
         numScene += 1;
         Loading();
     }

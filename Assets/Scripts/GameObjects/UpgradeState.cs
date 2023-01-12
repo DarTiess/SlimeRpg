@@ -1,7 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
 using Zenject;
 
@@ -31,7 +29,6 @@ public class UpgradeState : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-       
         upgrades[0].button.onClick.AddListener(UpgradeAttack);
         upgrades[1].button.onClick.AddListener(UpgradeSpeedAttack);
         upgrades[2].button.onClick.AddListener(UpgradeHP);
@@ -39,8 +36,6 @@ public class UpgradeState : MonoBehaviour
         SetButtonSettings(0);
         SetButtonSettings(1);
         SetButtonSettings(2);
-
-
     }
 
     void SetButtonSettings(int indexBtn)
@@ -98,11 +93,5 @@ public class UpgradeState : MonoBehaviour
               
             }
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

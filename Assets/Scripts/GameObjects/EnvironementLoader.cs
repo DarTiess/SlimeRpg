@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
@@ -19,18 +18,7 @@ public class EnvironementLoader : MonoBehaviour
         _enemyLoader= loader;
         _navMeshSettings= navMesh;
     }
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
+   
     public void LoadPlane(Transform pointToLoad)
     { 
         if (_numPlanes > 0)
@@ -52,6 +40,4 @@ public class EnvironementLoader : MonoBehaviour
         _navMeshSettings.UpdateNavMesh();
 
     }
-    
-  
 }

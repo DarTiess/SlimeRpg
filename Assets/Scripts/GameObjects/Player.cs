@@ -1,6 +1,4 @@
-using System;
 using DG.Tweening;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
@@ -28,11 +26,7 @@ using Random = UnityEngine.Random;
         private float jumpForce;
         [SerializeField]
         private float jumpDuration;
-       // [SerializeField] private float _timeMagnet;
-       // [SerializeField] private int _countSteepMagnet;
-       // [SerializeField] private AnimationCurve _changeY;
-      //  private float _steep;
-      //  private float _timeInSteep;
+      
       [Header("Attack Settings")]
       [SerializeField]
       private int attackPower;
@@ -78,8 +72,7 @@ using Random = UnityEngine.Random;
             _playerState.SetAttackValue(attackPower);
             _healthBar=GetComponent<HealthBar>();
             _playerAnimator= GetComponent<PlayerAnimator>();   
-         //   _steep = 1f / _countSteepMagnet;
-         //   _timeInSteep = _timeMagnet / _countSteepMagnet;
+        
             xPos = transform.position.z;
             _healthBar.SetMaxValus(health);
         }

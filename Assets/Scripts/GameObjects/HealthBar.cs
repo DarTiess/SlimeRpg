@@ -1,71 +1,65 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
-using TMPro;
 
 public class HealthBar : MonoBehaviour
 {
-    [SerializeField] private Slider slider;
-    float valueProgress = 0;
-    Camera camera;
-    [SerializeField]
-    private Text damageTxt;
+    [SerializeField] private Slider _slider;
+    [SerializeField] private Text _damageTxt;
+
+    private float _valueProgress = 0;
+    private Camera _camera;
 
     private void Awake()
     {
-        camera = Camera.main;
+        _camera = Camera.main;
     }
     private void Update()
     {
-        slider.transform.LookAt(transform.position + camera.transform.forward);
-      
+        _slider.transform.LookAt(transform.position + _camera.transform.forward);
     }
 
     public void SetOffSlider()
     {
-        slider.gameObject.SetActive(false);
+        _slider.gameObject.SetActive(false);
     }
 
     public void SetOnSlider()
     {
-        slider.gameObject.SetActive(true);
+        _slider.gameObject.SetActive(true);
     }
     public void SetMaxValus(float maxValues)
     {
-        slider.maxValue = maxValues;
-        slider.value = maxValues;
-        valueProgress = maxValues;
+        _slider.maxValue = maxValues;
+        _slider.value = maxValues;
+        _valueProgress = maxValues;
     }
 
     public void SetValues(float price, float time)
     {
-        if (valueProgress > 0)
+        if (_valueProgress > 0)
         {
-            valueProgress -= price;
-            slider.DOValue(valueProgress, time);
-            damageTxt.text = "-"+price.ToString();
-            damageTxt.gameObject.SetActive(true);
-            damageTxt.transform.DOLocalMoveY(80f, 0.2f)
+            _valueProgress -= price;
+            _slider.DOValue(_valueProgress, time);
+            _damageTxt.text = "-" + price.ToString();
+            _damageTxt.gameObject.SetActive(true);
+            _damageTxt.transform.DOLocalMoveY(80f, 0.2f)
                      .OnComplete(() =>
                      {
-                         damageTxt.gameObject.SetActive(false);
-                         damageTxt.gameObject.transform.DOLocalMoveY(20, 0f);
+                         _damageTxt.gameObject.SetActive(false);
+                         _damageTxt.gameObject.transform.DOLocalMoveY(20, 0f);
                      });
         }
-
-
     }
 
     public void UpgradeValue(float value, float time)
     {
-        float updatedValue = valueProgress + value;
-        if (updatedValue > slider.maxValue)
+        float updatedValue = _valueProgress + value;
+        if (updatedValue > _slider.maxValue)
         {
-            slider.maxValue = updatedValue;
+            _slider.maxValue = updatedValue;
         }
-        valueProgress += value;
-        slider.DOValue(valueProgress, time);
+        _valueProgress += value;
+        _slider.DOValue(_valueProgress, time);
     }
 }

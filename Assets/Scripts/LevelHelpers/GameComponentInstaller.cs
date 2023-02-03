@@ -16,7 +16,7 @@ using Zenject;
             Container.Bind<Player>().FromComponentOn(player).AsSingle();
             Container.Bind<EnemyLoader>().FromComponentOn(enemyLoader).AsSingle();
             Container.Bind<NavMeshSettings>().FromComponentOn(navMeshSettings).AsSingle();
-            Container.Bind<PlayerState>().FromComponentOn(state).AsSingle();
+            Container.Bind<UIDisplay>().FromComponentOn(state).AsSingle();
         }
     }
 

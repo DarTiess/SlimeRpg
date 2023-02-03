@@ -1,28 +1,27 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using Zenject;
 
 public class EnemyLoader : MonoBehaviour
 {
     [Header("Enemy Settings")]
-    [SerializeField]
-    private int enemyCount;
-    [SerializeField]
-    private List<Enemy> enemyPrefab;
-    private List<Enemy> _enemyList=new List<Enemy>();
-    private int _indexEnemy = 0;
-    [SerializeField]
-    private float speed; 
-  
-    [SerializeField] private float generateTimer;
-  
-    float timer;
-    private Player _player;
-    private PlayerState _money;
+    [SerializeField] private int _enemyCount;
+    [SerializeField] private List<Enemy> _enemyPrefab;
+    [SerializeField] private List<string> _enemyKies;
+    [SerializeField] private float _speed;
 
+    [SerializeField] private float _generateTimer;
+
+    private List<Enemy> _enemyList = new List<Enemy>();
+    private int _indexEnemy = 0;
+    private float _timer;
+    private Player _player;
+    private UIDisplay _money;
     private bool _canPush;
+
     [Inject]
-    private void InitiallizeComponent(Player playerObj, PlayerState moneyObj)
+    private void Construct(Player playerObj, UIDisplay moneyObj)
     {
         _player = playerObj;
         _money = moneyObj;
@@ -30,43 +29,18 @@ public class EnemyLoader : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        InitiallizeEnemyList();
+        InitiallizeAdressablesEnemy();
     }
 
-    private void InitiallizeEnemyList()
-    {
-       
-        for (int i = 0; i < enemyCount; i++)
-        { 
-            int indPref = 0;
-
-            if (i > 2)
-            {
-                indPref = Random.Range(0,enemyPrefab.Count);
-            }
-
-            Enemy enemy = Instantiate(enemyPrefab[indPref], transform.position, transform.rotation);
-            enemy.gameObject.SetActive(false); 
-           
-            enemy.InitializeEnemy(_player, _money);
-            _enemyList.Add(enemy);
-
-        }
-
-        timer = generateTimer;
-        _canPush= true;
-        return;
-    }
-    // Update is called once per frame
     void Update()
     {
         if (!_canPush)
         {
             return;
         }
-        if (timer < generateTimer)
+        if (_timer < _generateTimer)
         {
-            timer += Time.deltaTime;
+            _timer += Time.deltaTime;
             return;
         }
 
@@ -79,13 +53,41 @@ public class EnemyLoader : MonoBehaviour
         {
             _indexEnemy = 0;
         }
-        
-        _enemyList[_indexEnemy].transform.position =gameObject.transform.position;
-       
-        _enemyList[_indexEnemy].gameObject.SetActive(true); 
+
+        _enemyList[_indexEnemy].transform.position = gameObject.transform.position;
+
+        _enemyList[_indexEnemy].gameObject.SetActive(true);
         _enemyList[_indexEnemy].PushEnemy();
         _indexEnemy++;
-        timer = 0;
+        _timer = 0;
         return;
+    }
+    private async void InitiallizeAdressablesEnemy()
+    {
+        for (int i = 0; i < _enemyCount; i++)
+        {
+            int indPref = 0;
+            if (i > 2)
+            {
+                indPref = Random.Range(0, _enemyKies.Count);
+            }
+
+            var asyncPref = Addressables.LoadAssetAsync<GameObject>(_enemyKies[indPref]);
+            await asyncPref.Task;
+            CreateEnemy(asyncPref.Result);
+        }
+        _timer = _generateTimer;
+        _canPush = true;
+        return;
+    }
+
+    private void CreateEnemy(GameObject obj)
+    {
+        GameObject enemy = Instantiate(obj, transform.position, transform.rotation);
+        enemy.SetActive(false);
+
+        Enemy en = enemy.GetComponent<Enemy>();
+        en.InitializeEnemy(_player, _money);
+        _enemyList.Add(en);
     }
 }

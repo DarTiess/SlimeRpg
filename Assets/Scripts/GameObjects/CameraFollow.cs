@@ -3,25 +3,20 @@ using Zenject;
 
 public class CameraFollow : MonoBehaviour
 {
-    [SerializeField]
-    private float distanceZ;
-    [SerializeField]
-    private float distanceX;
-    [SerializeField]
-    private float height;
-    private GameObject player;
+    [SerializeField] private float _distanceZ;
+    [SerializeField] private float _distanceX;
+    [SerializeField] private float _height;
+    private GameObject _player;
 
     [Inject]
-
-    private void InitiallizeComponent(Player playerObj)
+    private void Construct(Player playerObj)
     {
-        player = playerObj.gameObject;
+        _player = playerObj.gameObject;
     }
-  
-    // Update is called once per frame
+
     void LateUpdate()
     {
-        transform.position = new Vector3(player.transform.position.x-distanceX,
-                                         player.transform.position.y-height, player.transform.position.z-distanceZ);
+        transform.position = new Vector3(_player.transform.position.x - _distanceX,
+                                         _player.transform.position.y - _height, _player.transform.position.z - _distanceZ);
     }
 }

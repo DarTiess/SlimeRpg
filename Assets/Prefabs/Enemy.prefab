@@ -204,10 +204,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd4bdfa5e0f3f8041bae199bbada4ed3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 15
-  payment: 3
-  makeDamage: 10
-  splashEffect: {fileID: 6379761400290283438}
+  _payment: 3
+  _makeDamage: 5
+  _splashEffect: {fileID: 6379761400290283438}
+  _health: 8
 --- !u!195 &2053820542426142031
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -242,8 +242,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2b0b0d3cf06d584f894e55c9127926d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slider: {fileID: 5271476657770622648}
-  damageTxt: {fileID: 1348030477257559724}
+  _slider: {fileID: 5271476657770622648}
+  _damageTxt: {fileID: 1348030477257559724}
 --- !u!1 &3389769217044702741
 GameObject:
   m_ObjectHideFlags: 0

@@ -3,18 +3,15 @@ using Zenject;
 
 public class Environement : MonoBehaviour
 {
-    
-    [SerializeField]
-    public Transform startPoint;
-    [SerializeField]
-    public Transform endPoint;
+
+    [SerializeField] public Transform startPoint;
+    [SerializeField] public Transform endPoint;
     private EnvironementLoader _environementLoader;
 
     [Inject]
-
-    private void InitiallizeComponent(EnvironementLoader loader)
+    private void Construct(EnvironementLoader loader)
     {
-       _environementLoader= loader;
+        _environementLoader = loader;
     }
 
     private void OnTriggerEnter(Collider other)

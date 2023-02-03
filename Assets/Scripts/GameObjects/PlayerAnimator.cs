@@ -1,30 +1,30 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Animator))]
 public class PlayerAnimator : MonoBehaviour
 {
-    private Animator animator;
-    // Start is called before the first frame update
+    private Animator _animator;
+
     void Start()
     {
-        animator= GetComponent<Animator>();
+        _animator = GetComponent<Animator>();
     }
-
 
     public void MoveAnimation()
     {
-        animator.SetBool("Walk", true);
-        animator.SetBool("Idle", false);
-    } 
-    
+        _animator.SetBool("Walk", true);
+        _animator.SetBool("Idle", false);
+    }
+
     public void IdleAnimation()
     {
-        animator.SetBool("Walk", false);
-        animator.SetBool("Idle", true);
+        _animator.SetBool("Walk", false);
+        _animator.SetBool("Idle", true);
     }
 
     public void TakeDamage(int numDamage)
     {
-        animator.SetTrigger("Damage");
-        animator.SetInteger("DamageType", numDamage);
+        _animator.SetTrigger("Damage");
+        _animator.SetInteger("DamageType", numDamage);
     }
 }

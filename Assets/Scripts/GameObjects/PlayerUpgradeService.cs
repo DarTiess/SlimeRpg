@@ -1,3 +1,4 @@
+using Infrastructure.GameStates;
 using UnityEngine;
 using Zenject;
 
@@ -16,14 +17,14 @@ public class PlayerUpgradeService : MonoBehaviour
     private float _jumpDuration;
     private int _attackPower;
     private HealthBar _healthBar;
-    private UIDisplay _uiState;
-    private Player _player;
-    private GameManager _gameManager;
+    private DisplayUIState _displayUIState;
+    private Player.Player _player;
+    private GameStates _gameStates;
     [Inject]
-    private void Construct(UIDisplay state, GameManager gameManager)
+    private void Construct(DisplayUIState state, GameStates gameStates)
     {
-        _uiState = state;
-        _gameManager = gameManager;
+        _displayUIState = state;
+        _gameStates = gameStates;
     }
 
     public void InitPlayerService(int attack, float jumpDuration)
@@ -36,10 +37,10 @@ public class PlayerUpgradeService : MonoBehaviour
         {
             _health = HpNum;
         }
-        _uiState.SetHealthValue(HpNum);
+        _displayUIState.SetHealthValue(HpNum);
         _attackPower = attack;
         _jumpDuration = jumpDuration;
-        _uiState.SetAttackValue(_attackPower);
+        _displayUIState.SetAttackValue(_attackPower);
         _healthBar = GetComponent<HealthBar>();
         _healthBar.SetMaxValus(_health);
     }
@@ -48,14 +49,14 @@ public class PlayerUpgradeService : MonoBehaviour
     {
         _health += hp;
         HpNum = _health;
-        _uiState.AddHP(hp);
+        _displayUIState.AddHP(hp);
         _healthBar.UpgradeValue(hp, 0.3f);
     }
 
     public void UpgradeAttackPower(int power)
     {
         _attackPower += power;
-        _uiState.AddAttack(power);
+        _displayUIState.AddAttack(power);
     }
     public void UpgradeSpeedAttack(int speed)
     {
@@ -66,13 +67,13 @@ public class PlayerUpgradeService : MonoBehaviour
     {
         _health -= damage;
         HpNum = _health;
-        _uiState.DamageHP(damage);
+        _displayUIState.DamageHP(damage);
 
         _healthBar.SetValues(damage, 0.4f);
 
         if (_health <= 0)
         {
-            _gameManager.LevelLost();
+            _gameStates.LevelLost();
         }
     }
 }

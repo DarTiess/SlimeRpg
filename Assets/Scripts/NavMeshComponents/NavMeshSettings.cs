@@ -4,7 +4,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class NavMeshSettings : MonoBehaviour
+public class NavMeshSettings : MonoBehaviour, INavMeshSettings
 {
 
     private NavMeshSurface _surface;

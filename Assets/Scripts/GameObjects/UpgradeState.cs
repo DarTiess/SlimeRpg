@@ -18,11 +18,11 @@ public class UpgradeState : MonoBehaviour
     }
     [SerializeField]private List<UpgradeSetting> _upgrades;
    
-    private Player _player;
-    private UIDisplay _playerState;
+    private Player.Player _player;
+    private DisplayUIState _playerState;
 
     [Inject]
-    private void Construct(Player playerObj, UIDisplay state)
+    private void Construct(Player.Player playerObj, DisplayUIState state)
     {
         _player= playerObj;
         _playerState= state;
@@ -66,7 +66,7 @@ public class UpgradeState : MonoBehaviour
         {
             if (_playerState.HadCoins(upgrade.priceUpgrade))
             {
-                _player.MakeUpgrades(type, upgrade.stepUpgrade);
+               // _player.MakeUpgrades(type, upgrade.stepUpgrade);
                 upgrade.priceUpgrade += upgrade.stepUpgrade;
                 upgrade.stepUpgrade +=upgrade.stepUp;
                

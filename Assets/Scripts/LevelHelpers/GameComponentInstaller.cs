@@ -1,3 +1,5 @@
+using Environement;
+using Infrastructure.GameStates;
 using UnityEngine;
 using Zenject;
 
@@ -11,12 +13,12 @@ using Zenject;
         [SerializeField] private GameObject state;
         public override void InstallBindings()
         {
-            Container.Bind<GameManager>().FromComponentOn(gameManager).AsSingle();
+            Container.Bind<GameStates>().FromComponentOn(gameManager).AsSingle();
             Container.Bind<EnvironementLoader>().FromComponentOn(environementLoader).AsSingle();
-            Container.Bind<Player>().FromComponentOn(player).AsSingle();
+            Container.Bind<Player.Player>().FromComponentOn(player).AsSingle();
             Container.Bind<EnemyLoader>().FromComponentOn(enemyLoader).AsSingle();
             Container.Bind<NavMeshSettings>().FromComponentOn(navMeshSettings).AsSingle();
-            Container.Bind<UIDisplay>().FromComponentOn(state).AsSingle();
+            Container.Bind<DisplayUIState>().FromComponentOn(state).AsSingle();
         }
     }
 

@@ -1,8 +1,10 @@
+using HealthBar;
 using Infrastructure.GameStates;
+using UI;
 using UnityEngine;
 using Zenject;
 
-[RequireComponent(typeof(HealthBar))]
+[RequireComponent(typeof(PlayerHealthBar))]
 public class PlayerUpgradeService : MonoBehaviour
 {
     [Header("Health")]
@@ -16,7 +18,7 @@ public class PlayerUpgradeService : MonoBehaviour
 
     private float _jumpDuration;
     private int _attackPower;
-    private HealthBar _healthBar;
+    private PlayerHealthBar _playerHealthBar;
     private DisplayUIState _displayUIState;
     private Player.Player _player;
     private GameStates _gameStates;
@@ -41,8 +43,8 @@ public class PlayerUpgradeService : MonoBehaviour
         _attackPower = attack;
         _jumpDuration = jumpDuration;
         _displayUIState.SetAttackValue(_attackPower);
-        _healthBar = GetComponent<HealthBar>();
-        _healthBar.SetMaxValus(_health);
+        _playerHealthBar = GetComponent<PlayerHealthBar>();
+        _playerHealthBar.SetMaxValus(_health);
     }
   
     public void UpgradeHP(int hp)
@@ -50,7 +52,7 @@ public class PlayerUpgradeService : MonoBehaviour
         _health += hp;
         HpNum = _health;
         _displayUIState.AddHP(hp);
-        _healthBar.UpgradeValue(hp, 0.3f);
+        _playerHealthBar.UpgradeValue(hp, 0.3f);
     }
 
     public void UpgradeAttackPower(int power)
@@ -69,7 +71,7 @@ public class PlayerUpgradeService : MonoBehaviour
         HpNum = _health;
         _displayUIState.DamageHP(damage);
 
-        _healthBar.SetValues(damage, 0.4f);
+        _playerHealthBar.SetValues(damage, 0.4f);
 
         if (_health <= 0)
         {

@@ -106,7 +106,7 @@ GameObject:
   - component: {fileID: 2053820542426142029}
   - component: {fileID: 2053820542426142030}
   - component: {fileID: 2053820542426142031}
-  - component: {fileID: 5608698287334552700}
+  - component: {fileID: 8781800468292617859}
   m_Layer: 0
   m_Name: Enemy 1
   m_TagString: Enemy
@@ -230,7 +230,7 @@ NavMeshAgent:
   m_BaseOffset: 0.5
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &5608698287334552700
+--- !u!114 &8781800468292617859
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -239,7 +239,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2053820542426142000}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2b0b0d3cf06d584f894e55c9127926d, type: 3}
+  m_Script: {fileID: 11500000, guid: 4eb9d41a2eb9435199a391e577757670, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _slider: {fileID: 5271476657770622648}

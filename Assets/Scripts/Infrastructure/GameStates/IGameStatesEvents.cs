@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 
 namespace Infrastructure.GameStates
 {
@@ -8,7 +9,9 @@ namespace Infrastructure.GameStates
         event Action OnPlayGame;
         event Action OnLevelLost;
         event Action StopGame;
+        event Action<Transform> CreatePlane;
+        event Action<int> EnemyDeath;
 
-   
+
     }
 }

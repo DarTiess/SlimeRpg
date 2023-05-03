@@ -1,105 +1,72 @@
-using System;
-using System.Collections.Generic;
-using DG.Tweening;
 using Infrastructure.GameStates;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 
 namespace Player
 {
     [RequireComponent(typeof(PlayerAnimator))]
+    [RequireComponent(typeof(PlayerMove))]
+    [RequireComponent(typeof(Rigidbody))]
 //[RequireComponent(typeof(PlayerUpgradeService))]
-    public class Player : MonoBehaviour, IPlayerEvents
-{
-        public event Action Moving;
-        public event Action StopMoving;
-        public event Action Damaging;
-        
+    public class Player : MonoBehaviour
+    {
         [Header("Move Settings")]
-        [SerializeField] private float _speed;
+        [SerializeField] private float _speed=18.14f;
         [Header("Pushing Balls Settings")]
-        [SerializeField] private GameObject _ballPref;
-        [SerializeField] private int _countBalls;
+        [SerializeField] private Bullet _ballPref;
+        [SerializeField] private int _countBalls=10;
         [SerializeField] private Transform _pushBallPoint;
-        [SerializeField] private float _jumpForce;
-        [SerializeField] public float _jumpDuration;
+        [SerializeField] public float _jumpDuration=0.64f;
         [Header("Attack Settings")]
-        [SerializeField] private int _attackPower;
-        [SerializeField] private float _radiusDetectEnemy;
+        [SerializeField] private int _attackPower=5;
+        [SerializeField] private float _radiusDetectEnemy=2.76f;
+        [SerializeField] private float kickForce = 70f;
         
-        private List<GameObject> _ballList;
-        private int _indexBall = 0;
-        private bool _isOnAtack;
+        private Rigidbody _rigidbody;
 
         private PlayerAnimator _playerAnimator;
+        private PlayerMove _playerMove;
+        private PlayerBulletStack _bulletStack;
         //  private PlayerUpgradeService _playerUpgradeService;
 
         private IGameStatesEvents _gameStatesEvents;
+        private bool _isOnAtack;
 
-        private bool _canMove;
-        private float zPosition;
-        private float yPosition;
 
         void Update()
         {
-            AttackEnemy(gameObject.transform.position, _radiusDetectEnemy);
-            if (_canMove)
-            {
-                Vector3 move = Vector3.zero;
-                move.z = _speed * Time.deltaTime;
-                transform.Translate(move);
-            }
-        }
-
-        private void OnDisable()
-        {
-            _gameStatesEvents.OnPlayGame -= StartMove;
-            _gameStatesEvents.StopGame -= StopMove;
+            TryDetectEnemy(gameObject.transform.position, _radiusDetectEnemy);
         }
 
         public void Init(IGameStatesEvents statesEvents)
         {
+            _playerMove = GetComponent<PlayerMove>();
+            _playerMove.Init(_speed);
+            _playerAnimator = GetComponent<PlayerAnimator>();
+            _bulletStack = new PlayerBulletStack(_ballPref, _countBalls, _pushBallPoint,_jumpDuration, transform, _attackPower);
+            
             _gameStatesEvents = statesEvents;
             _gameStatesEvents.OnPlayGame += StartMove;
             _gameStatesEvents.StopGame += StopMove;
-           
-            _ballList = new List<GameObject>(_countBalls);
-            SetBallToStack();
-       
-            _playerAnimator = GetComponent<PlayerAnimator>();
-            _playerAnimator.Init(this);
+            
             // _playerUpgradeService = GetComponent<PlayerUpgradeService>();
             // _playerUpgradeService.InitPlayerService(_attackPower, _jumpDuration);
-            zPosition = transform.position.z;
-            yPosition = transform.position.y;
+            _rigidbody = GetComponent<Rigidbody>();
+        }
+
+        private void StartMove()
+        {
+            _playerMove.StartMove();
+            _playerAnimator.MoveAnimation();
         }
 
         private void StopMove()
         {
-            _canMove = false;
-           StopMoving?.Invoke();
+            _playerMove.StopMove();
+            _playerAnimator.IdleAnimation();
         }
 
-        public void StartMove()
-        {
-            _canMove = true;
-            Moving?.Invoke();
-            transform.position = new Vector3(transform.position.x, yPosition, zPosition);
-        }
-
-        private void SetBallToStack()
-        {
-            for (int i = 0; i < _countBalls; i++)
-            {
-                GameObject ball = Instantiate(_ballPref, _pushBallPoint.transform.position, _pushBallPoint.transform.rotation);
-                ball.transform.parent = transform;
-                ball.gameObject.SetActive(false);
-                _ballList.Add(ball);
-            }
-        }
-
-        void AttackEnemy(Vector3 center, float radius)
+        void TryDetectEnemy(Vector3 center, float radius)
         {
             Collider[] hitColliders = Physics.OverlapSphere(center, radius);
 
@@ -110,45 +77,26 @@ namespace Player
                 if (hitColliders[i].gameObject.CompareTag("Enemy"))
                 {
                     hitColliders[i].gameObject.tag = "Untagged";
-                   StopMoving?.Invoke();
-                    _canMove = false;
+                    StopMove();
+                 
                     if (!_isOnAtack)
                     {
                         _isOnAtack = true;
-
-                        PushBalls(hitColliders[i].gameObject.transform);
+                        _bulletStack.PushBullet(hitColliders[i].gameObject.transform);
+                      _isOnAtack = false;
                     }
                 }
                 i++;
             }
         }
 
-        void PushBalls(Transform target)
-        {
-            // StartCoroutine(Pushing(target,_countSteepMagnet, _steep, _changeY,_timeInSteep));
-
-            _ballList[_indexBall].transform.position = _pushBallPoint.position;
-            _ballList[_indexBall].transform.parent = gameObject.transform;
-            _ballList[_indexBall].SetActive(true);
-            _ballList[_indexBall].transform.DOJump(target.position, _jumpForce, 1, _jumpDuration).OnComplete(() =>
-            {
-                target.gameObject.GetComponent<Enemy>().TakeDamage(_attackPower);
-                _ballList[_indexBall].transform.position = target.transform.position;
-                _ballList[_indexBall].transform.parent = target.transform;
-                _ballList[_indexBall].SetActive(false);
-                _isOnAtack = false;
-                _indexBall++;
-                if (_indexBall >= _ballList.Count)
-                {
-                    _indexBall = 0;
-                }
-            });
-        }
+     
+   
         public void TakeDamage(int damage, Transform enemy)
         {
             // _playerUpgradeService.TakeDamage(damage);
            
-            Damaging?.Invoke();
+            _playerAnimator.TakeDamage();
             EnemyCollision(enemy);
         }
 
@@ -156,7 +104,7 @@ namespace Player
         public void EnemyCollision(Transform enemy)
         {
             Vector3 awayFly = transform.position - enemy.position;
-            gameObject.GetComponent<Rigidbody>().AddForce(awayFly * 70, ForceMode.Impulse);
+            _rigidbody.AddForce(awayFly * kickForce, ForceMode.Impulse);
         }
 
         /*  public void MakeUpgrades( UpgradesType upgradeType, int value)

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Infrastructure.GameStates;
 using UnityEngine;
 
 namespace Environement
@@ -9,9 +10,13 @@ namespace Environement
         public event Action<Transform> CreatePlane;
         private List<Environement> _planes = new List<Environement>();
         private int _numPlanes = 0;
-   
-        public EnvironementLoader(List<Environement> planes)
+
+        private IGameStates _gameStates;
+        private INavMeshSettings _navMeshSettings;
+        public EnvironementLoader(List<Environement> planes, IGameStates gameStates, INavMeshSettings navMesh)
         {
+            _gameStates = gameStates;
+            _navMeshSettings = navMesh;
             foreach (Environement plane in planes)
             {
                 _planes.Add(plane);
@@ -40,7 +45,8 @@ namespace Environement
        
             _planes[_numPlanes].SetOnPosition(pointToLoad);
             _planes[_numPlanes].gameObject.SetActive(true);
-          CreatePlane?.Invoke(_planes[_numPlanes].EndPoint);
+            _navMeshSettings.UpdateNavMesh();
+          _gameStates.OnCreatePlane(_planes[_numPlanes].EndPoint);
         }
     }
 }

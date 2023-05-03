@@ -9,28 +9,27 @@ namespace Infrastructure.GameStates
         public event Action OnPlayGame;
         public event Action OnLevelLost;
         public event Action StopGame;
+        public event Action<Transform> CreatePlane;
+        public event Action<int> EnemyDeath;
 
-        private LoadScene loadScene;
-        private bool onPaused;
+        private LoadScene _loadScene;
+        private bool _onPaused;
 
 
-        public void Init(LoadScene _loadScene)
+        public void Init(LoadScene loadScene)
         {
-            loadScene = _loadScene;
+            _loadScene = loadScene;
             LevelStart();
         }
 
         public void LevelStart()
         {
-            Debug.Log("StartLevel");
             OnLevelStart?.Invoke();
         }
 
         public void PlayGame()
         {
-            Debug.Log("PlayLevel");
             OnPlayGame?.Invoke();
-
         }
 
         public void LevelLost()
@@ -40,30 +39,40 @@ namespace Infrastructure.GameStates
 
         public void LoadNextLevel()
         {
-            loadScene.LoadNextLevel();
+            _loadScene.LoadNextLevel();
         }
 
         public void RestartScene()
         {
-            loadScene.RestartScene();
+            _loadScene.RestartScene();
         }
 
         public void PauseGame()
         {
-            if (!onPaused)
+            if (!_onPaused)
             {
                 StopGame?.Invoke();
-                onPaused = true;
+                _onPaused = true;
             }
             else
             {
                 PlayGame();
-                onPaused = false;
+                _onPaused = false;
             }
+        }
 
+        public void OnCreatePlane(Transform endPoint)
+        {
+           CreatePlane?.Invoke(endPoint);
+        }
 
+        public void OnEnemyDeath(int payment)
+        {
+            EnemyDeath?.Invoke(payment);
+            PlayGame();
         }
     }
+  
 }
 
 

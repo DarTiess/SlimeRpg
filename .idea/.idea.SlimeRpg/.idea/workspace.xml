@@ -8,6 +8,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/../../Hyper-band/Template/Assets/ProjectAssets/Scripts/Helpers/ProgressCleaning.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../MyPets/MyPlane/Assets/Scripts/Infrastructure/StartGame.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
@@ -83,7 +84,8 @@
       <workItem from="1682691062044" duration="1448000" />
       <workItem from="1682874835075" duration="970000" />
       <workItem from="1682954824516" duration="5570000" />
-      <workItem from="1683009659597" duration="17223000" />
+      <workItem from="1683009659597" duration="22459000" />
+      <workItem from="1683090081040" duration="15678000" />
     </task>
     <servers />
   </component>
@@ -92,6 +94,17 @@
   </component>
   <component name="UnityProjectConfiguration" hasMinimizedUI="true" />
   <component name="UnityUnitTestConfiguration" currentTestLauncher="EditMode" />
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
   </component>

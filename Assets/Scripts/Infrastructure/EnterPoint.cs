@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Enemy;
 using Environement;
 using UI;
 using UnityEngine;
@@ -89,8 +90,7 @@ namespace Infrastructure
 
         private void CreateEnvironementLoader()
         {
-            _environementLoader = new EnvironementLoader(_environements);
-            _environementLoader.CreatePlane += OnCreatePlane;
+            _environementLoader = new EnvironementLoader(_environements, _gameState, _navMeshSettings);
         }
 
         private void CreateEnemyFactory()
@@ -101,20 +101,10 @@ namespace Infrastructure
         private async Task CreateEnemyLoader()
         {
             _enemyLoader = Instantiate(_enemyLoaderPrefab, _enemyLoaderPosition.position, _enemyLoaderPosition.rotation);
-            _enemyLoader.Init(_enemyFactorySettings._timerPooling, await _enemyFactory.CreateEnemiesPool());
-            _enemyLoader.EnemyDeath += OnDeathEnemy;
-        }
-
-        private void OnDeathEnemy(int payment)
-        {
-            _ui.AddCoins(payment);
-            _player.StartMove();
-        }
-
-        private void OnCreatePlane(Transform newPosition)
-        {
-            _enemyLoader.ChangePoolingPosition(newPosition);
-            _navMeshSettings.UpdateNavMesh();
+            _enemyLoader.Init(_enemyFactorySettings._timerPooling, 
+                              await _enemyFactory.CreateEnemiesPool(), 
+                              _gameState, _gameState);
+            
         }
     }
 }

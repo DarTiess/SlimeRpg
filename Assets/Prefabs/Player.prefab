@@ -957,6 +957,7 @@ GameObject:
   - component: {fileID: 1758178298}
   - component: {fileID: 1758178297}
   - component: {fileID: 1758178300}
+  - component: {fileID: 5115805884351558207}
   - component: {fileID: 1758178303}
   - component: {fileID: 832050482683223638}
   m_Layer: 0
@@ -1046,14 +1047,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 18.14
-  _ballPref: {fileID: 6649742898099563970, guid: e0d8e79d4b8c0554d91343d170202f89,
+  _ballPref: {fileID: 8325085660230318334, guid: e0d8e79d4b8c0554d91343d170202f89,
     type: 3}
   _countBalls: 10
   _pushBallPoint: {fileID: 1984321584}
-  _jumpForce: 3
   _jumpDuration: 0.64
+  _attackTimer: 1
   _attackPower: 5
   _radiusDetectEnemy: 2.76
+  kickForce: 70
 --- !u!114 &1758178300
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1064,6 +1066,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0bb58e308216a754c8502a7a3d52518b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5115805884351558207
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6705402075998324148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33f0052147984039ac56da1cf751c9ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &1758178303

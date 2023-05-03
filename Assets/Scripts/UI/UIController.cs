@@ -26,8 +26,11 @@ namespace UI
         {
             _gameEvents = gameEvents;
             _gameStates = gameStates;
+            
             _gameEvents.OnLevelStart += OnLevelStart;
             _gameEvents.OnLevelLost += OnLevelLost;
+            _gameEvents.EnemyDeath += AddCoins;
+            
             _mainMenu.ClickedPanel += OnPlayGame;
             _lost.ClickedPanel += RestartGame;
             _inGame.ClickedPanel += OnPauseGame;
@@ -37,6 +40,8 @@ namespace UI
         {
             _gameEvents.OnLevelStart -= OnLevelStart;
             _gameEvents.OnLevelLost -= OnLevelLost;
+            _gameEvents.EnemyDeath -= AddCoins;
+            
             _mainMenu.ClickedPanel -= OnPlayGame;
             _lost.ClickedPanel -= RestartGame;
             _inGame.ClickedPanel -= OnPauseGame;
@@ -79,7 +84,7 @@ namespace UI
             _gameStates.RestartScene();
         }
 
-        public void AddCoins(int payment)
+        private void AddCoins(int payment)
         {
             _displayUiStates.AddCoins(payment);
         }

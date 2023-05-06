@@ -4,7 +4,11 @@ using UnityEngine;
 
 namespace Data
 {
-    public class DataSaver : IDataSaver
+    public interface ISceneData
+    {
+        int CurrentScene { get; set; }
+    }
+    public class DataSaver : IDataSaver, ISceneData
     {
         public event Action<int> DamageHp;
         public event Action<int> UpgradeAttack;
@@ -22,6 +26,11 @@ namespace Data
             get { return PlayerPrefs.GetInt("Coins"); }
             set { PlayerPrefs.SetInt("Coins", value); }
         }
+        public int CurrentScene
+        {
+            get { return PlayerPrefs.GetInt("NumberScene"); }
+            set { PlayerPrefs.SetInt("NumberScene", value); }
+        }
         public void OnMakeUpgrade(UpgradesType typeUpgrade, int value)
         {
             MakeUpgrade?.Invoke(typeUpgrade, value);
@@ -36,14 +45,20 @@ namespace Data
             }
         }
 
+        public void SetAttackPower(int attackPower)
+        {
+            _attack = attackPower;
+            UpgradeAttack?.Invoke(_attack);
+        }
+
+        public void SetHp(int health)
+        {
+            HpNum = health;
+        }
+
         public void PayCoins(int coins)
         {
             CoinNum -= coins;
-        }
-
-        private void OnUpgradeHp(int health)
-        {
-            HpNum += health;
         }
 
         public void TakeDamageHp(int damage)
@@ -52,23 +67,15 @@ namespace Data
             DamageHp?.Invoke(damage);
         }
 
-        public void SetHp(int health)
+        private void OnUpgradeHp(int health)
         {
-            HpNum = health;
+            HpNum += health;
         }
 
         private void OnUpgradeAttackPower(int attackPower)
         {
             _attack +=attackPower;
             UpgradeAttack?.Invoke(attackPower);
-        
-        }
-
-        public void SetAttackPower(int attackPower)
-        {
-            _attack = attackPower;
-            Debug.Log(_attack+ " Onset attack");
-            UpgradeAttack?.Invoke(_attack);
         }
     }
 }

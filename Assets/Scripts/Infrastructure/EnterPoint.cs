@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Data;
 using Enemy;
 using Environement;
+using Infrastructure.LevelHelpers;
 using UI;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -16,7 +17,7 @@ namespace Infrastructure
         [SerializeField] private Player.Player _playerPrefab;
         [SerializeField] private Transform _playerStartPosition;
         [Header("SceneLoader")]
-        [SerializeField] private LoadScene _loadScene;
+        [SerializeField] private SceneSetting _sceneSettings;
         [Header("UI")]
         [FormerlySerializedAs("_canvasPrefab")]
         [SerializeField] private UIController _uiPrefab;
@@ -32,6 +33,7 @@ namespace Infrastructure
 
         private Player.Player _player;
         private CameraFollow.CameraFollow _mainCamera;
+        private LoadScene _loadScene;
         private GameStates.GameStates _gameState;
         private UIController _ui;
         private List<Environement.Environement> _environements;
@@ -43,6 +45,7 @@ namespace Infrastructure
         private async void Awake()
         {
             _dataSaver = new DataSaver();
+            _loadScene = new LoadScene(_dataSaver, _sceneSettings);
             CreateGameStates();
             CreatePlayer();
             CreateUI();

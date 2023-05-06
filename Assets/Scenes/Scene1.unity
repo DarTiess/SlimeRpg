@@ -352,7 +352,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerPrefab: {fileID: 1758178297, guid: d941199d4a58fcb45adc75ea8e37c42c, type: 3}
   _playerStartPosition: {fileID: 461678819}
-  _loadScene: {fileID: 11400000, guid: ec33c830ceb91a346b32a016a8e9a2a6, type: 2}
+  _sceneSettings: {fileID: 11400000, guid: 0783ab51bd3a81441acb153ac31afc4c, type: 2}
   _uiPrefab: {fileID: 8637690266277925325, guid: 4c4dfa07db4430142843e6177c83f03a,
     type: 3}
   _startEnvironementPosition: {fileID: 1420301706}

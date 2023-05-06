@@ -22,7 +22,7 @@ namespace Infrastructure.GameStates
             LevelStart();
         }
 
-        public void LevelStart()
+        private void LevelStart()
         {
             OnLevelStart?.Invoke();
         }
@@ -36,12 +36,7 @@ namespace Infrastructure.GameStates
         {
             OnLevelLost?.Invoke();
         }
-
-        public void LoadNextLevel()
-        {
-            _loadScene.LoadNextLevel();
-        }
-
+        
         public void RestartScene()
         {
             _loadScene.RestartScene();

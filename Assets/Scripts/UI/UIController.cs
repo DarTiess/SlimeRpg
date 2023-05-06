@@ -1,11 +1,10 @@
-using System;
+using Data;
 using Infrastructure.GameStates;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace UI
 {
-    [RequireComponent(typeof(DisplayUIState))]
+    [RequireComponent(typeof(UIPlayerStates))]
     public class UIController : MonoBehaviour
     {
         [Header("Panels")]
@@ -15,25 +14,50 @@ namespace UI
    
         private IGameStatesEvents _gameEvents;
         private IGameStates _gameStates;
-        private DisplayUIState _displayUiStates;
+        private IDataSaver _data;
+        private UIPlayerStates _uiPlayerStateses;
+        private UIPlayerUpgradeWindow _uiPlayerUpgradeWindow;
 
-        private void Start()
-        {
-            _displayUiStates = GetComponent<DisplayUIState>();
-        }
-
-        public void Init(IGameStatesEvents gameEvents, IGameStates gameStates)
+        public void Init(IGameStatesEvents gameEvents, IGameStates gameStates, IDataSaver data)
         {
             _gameEvents = gameEvents;
             _gameStates = gameStates;
-            
             _gameEvents.OnLevelStart += OnLevelStart;
             _gameEvents.OnLevelLost += OnLevelLost;
             _gameEvents.EnemyDeath += AddCoins;
             
+            _data = data;
+            
+            _uiPlayerStateses = GetComponent<UIPlayerStates>();
+            _uiPlayerStateses.Init(_data);
+            _uiPlayerStateses.PayCoins += OnPayCoins;
+
+            _uiPlayerUpgradeWindow = GetComponent<UIPlayerUpgradeWindow>();
+            _uiPlayerUpgradeWindow.Init(_uiPlayerStateses);
+            _uiPlayerUpgradeWindow.MakeUpgrade += TryMakePlayerUpgrade;
+            
             _mainMenu.ClickedPanel += OnPlayGame;
             _lost.ClickedPanel += RestartGame;
             _inGame.ClickedPanel += OnPauseGame;
+        }
+
+        private void OnPayCoins(int coins)
+        {
+            _data.PayCoins(coins);
+        }
+
+        private void TryMakePlayerUpgrade(UpgradesType typeUpgrade, int value)
+        {
+            switch (typeUpgrade)
+            {
+                case UpgradesType.HP:
+                    _uiPlayerStateses.AddHp(value);
+                    break;
+                case UpgradesType.AttackPower:
+                    _uiPlayerStateses.AddAttack(value);
+                    break;
+            }
+            _data.OnMakeUpgrade(typeUpgrade, value);
         }
 
         private void OnDisable()
@@ -41,7 +65,7 @@ namespace UI
             _gameEvents.OnLevelStart -= OnLevelStart;
             _gameEvents.OnLevelLost -= OnLevelLost;
             _gameEvents.EnemyDeath -= AddCoins;
-            
+            _uiPlayerUpgradeWindow.MakeUpgrade -= TryMakePlayerUpgrade;
             _mainMenu.ClickedPanel -= OnPlayGame;
             _lost.ClickedPanel -= RestartGame;
             _inGame.ClickedPanel -= OnPauseGame;
@@ -86,7 +110,8 @@ namespace UI
 
         private void AddCoins(int payment)
         {
-            _displayUiStates.AddCoins(payment);
+            _uiPlayerStateses.AddCoins(payment);
+            _data.CoinNum += payment;
         }
     }
 }

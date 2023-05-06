@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Data;
 using Enemy;
 using Environement;
 using UI;
@@ -37,12 +38,15 @@ namespace Infrastructure
         private EnvironementLoader _environementLoader;
         private EnemyLoader _enemyLoader;
         private EnemyFactory _enemyFactory;
+        private DataSaver _dataSaver;
 
         private async void Awake()
         {
+            _dataSaver = new DataSaver();
             CreateGameStates();
-            CreateUI();
             CreatePlayer();
+            CreateUI();
+            
             InitCamera();
 
             CreateEnvironementsList();
@@ -63,13 +67,13 @@ namespace Infrastructure
         private void CreateUI()
         {
             _ui = Instantiate(_uiPrefab);
-            _ui.Init(_gameState, _gameState);
+            _ui.Init(_gameState, _gameState, _dataSaver);
         }
 
         private void CreatePlayer()
         {
             _player = Instantiate(_playerPrefab, _playerStartPosition.position, _playerStartPosition.rotation);
-            _player.Init(_gameState);
+            _player.Init(_gameState, _gameState, _dataSaver);
         }
 
         private void InitCamera()

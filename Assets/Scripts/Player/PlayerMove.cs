@@ -1,5 +1,4 @@
-﻿using System;
-using Infrastructure.GameStates;
+﻿using Infrastructure.GameStates;
 using UnityEngine;
 
 namespace Player
@@ -38,8 +37,12 @@ namespace Player
         public void StartMove()
         {
             _canMove = true;
-            transform.position = new Vector3(transform.position.x, yPosition, zPosition);
+            CorrectPlayerPosition();
         }
 
+        private void CorrectPlayerPosition()
+        {
+            transform.position = new Vector3(transform.position.x, yPosition, zPosition);
+        }
     }
 }

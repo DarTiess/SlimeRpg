@@ -14,10 +14,9 @@ namespace Player
             _damage = attackPower;
             Hide();
         }
-
-        public void Push(Transform target, Transform _pushBallPoint)
+        public void Push(Transform target, Transform pushBallPoint)
         {
-            SetToPushPosition(_pushBallPoint.position);
+            SetToPushPosition(pushBallPoint.position);
             Show();
             transform.DOMove(target.position,1).OnComplete(() =>
             {
@@ -25,31 +24,26 @@ namespace Player
                 Hide();
             });
         }
-
         private void SetParent(Transform parentTransform)
         {
             transform.parent = parentTransform;
         }
-
         private void Hide()
         {
             gameObject.SetActive(false);
         }
-
         private void Show()
         {
             gameObject.SetActive(true);
         }
-
         private void SetToPushPosition(Vector3 pushPosition)
         {
             transform.position = pushPosition;
-         
         }
 
         public void TryDestroy()
         {
-            DOTween.KillAll();
+            DOTween.Kill(this);
             Hide();
         }
     }

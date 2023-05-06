@@ -959,7 +959,6 @@ GameObject:
   - component: {fileID: 1758178300}
   - component: {fileID: 5115805884351558207}
   - component: {fileID: 1758178303}
-  - component: {fileID: 832050482683223638}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -1046,16 +1045,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f18def30492b70a4c87eaab19a92a7a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 18.14
+  _speed: 18.7
   _ballPref: {fileID: 8325085660230318334, guid: e0d8e79d4b8c0554d91343d170202f89,
     type: 3}
   _countBalls: 10
   _pushBallPoint: {fileID: 1984321584}
-  _jumpDuration: 0.64
-  _attackTimer: 1
-  _attackPower: 5
+  _jumpDuration: 1.52
+  _attackPower: 3
   _radiusDetectEnemy: 2.76
   kickForce: 70
+  _health: 25
 --- !u!114 &1758178300
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1094,19 +1093,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _slider: {fileID: 786670297}
   _damageTxt: {fileID: 708662962}
---- !u!114 &832050482683223638
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6705402075998324148}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c6a9ea4095ccce545a0affeb47dd4b23, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _health: 25
 --- !u!1 &7534262480104691789
 GameObject:
   m_ObjectHideFlags: 0

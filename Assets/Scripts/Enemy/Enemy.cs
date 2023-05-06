@@ -12,7 +12,6 @@ namespace Enemy
     public class Enemy : MonoBehaviour
     {
         public event Action<int> EnemyDeath;
-        public event Action<int, Enemy> EnemyAttack;
         [SerializeField] private int _payment;
         [SerializeField] private int _makeDamage;
         [SerializeField] private ParticleSystem _splashEffect;
@@ -25,7 +24,7 @@ namespace Enemy
         private bool _canMove;
         private int _startHealth;
     
-        void LateUpdate()
+        void FixedUpdate()
         {
             if (_canMove)
             {
@@ -53,13 +52,12 @@ namespace Enemy
             _navMesh.isStopped = false;
         }
 
-        private void StopEnemy()
+        public void StopEnemy()
         {
             _canMove = false;
             _navMesh.isStopped = true;
-            StartCoroutine(DeadEnemy());
+           
         }
-
         IEnumerator DeadEnemy()
         {
             yield return new WaitForSeconds(0.2f);
@@ -73,11 +71,12 @@ namespace Enemy
             {
                 _splashEffect.transform.position = collision.transform.position;
                 _splashEffect.Play();
-                TakeDamage(bullet.Damage);
                 bullet.TryDestroy();
+                TakeDamage(bullet.Damage);
+                
             }
 
-            if (collision.gameObject.TryGetComponent<Player.Player>(out Player.Player player))
+            if (collision.gameObject.TryGetComponent<IPlayerDamage>(out IPlayerDamage player))
             {
                 player.TakeDamage(_makeDamage, gameObject.transform);
             }
@@ -89,6 +88,7 @@ namespace Enemy
             if (_health <= 0)
             {
                 StopEnemy();
+                StartCoroutine(DeadEnemy());
             }
             else
             {

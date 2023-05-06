@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Infrastructure.GameStates;
 using UnityEngine;
@@ -7,7 +6,6 @@ namespace Environement
 {
     public class EnvironementLoader
     {
-        public event Action<Transform> CreatePlane;
         private List<Environement> _planes = new List<Environement>();
         private int _numPlanes = 0;
 
@@ -22,7 +20,6 @@ namespace Environement
                 _planes.Add(plane);
                 plane.TriggerPlayer += OnTriggerPlayer;
             }
-
             for (int i = 1; i < _planes.Count; i++)
             {
                 _planes[i].gameObject.SetActive(false);

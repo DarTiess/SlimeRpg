@@ -34,8 +34,10 @@ namespace Enemy
             _gameStatesEvents = gameStatesEvents;
             _gameStates = gameStates;
             _gameStatesEvents.CreatePlane += ChangePoolingPosition;
+            _gameStatesEvents.OnLevelLost += StopGame;
             CreateEnemyList(enemyList);
         }
+
         private void CreateEnemyList(List<Enemy> enemyList)
         {
             _enemyList = new List<Enemy>(enemyList.Count);
@@ -48,14 +50,17 @@ namespace Enemy
 
             _canPush = true;
         }
+
         private void OnDeathEnemy(int payment)
         {
             _gameStates.OnEnemyDeath(payment);
         }
+
         private void ChangePoolingPosition(Transform newPosition)
         {
             gameObject.transform.position = newPosition.position;
         }
+
         private void PushEnemy()
         {
             if (_indexEnemy >= _enemyList.Count)
@@ -69,6 +74,18 @@ namespace Enemy
             _enemyList[_indexEnemy].PushEnemy();
             _indexEnemy++;
             _timer = 0;
+        }
+
+        private void StopGame()
+        {
+            _canPush = false;
+            foreach (Enemy enemy in _enemyList)
+            {
+                if(enemy.isActiveAndEnabled)
+                {
+                    enemy.StopEnemy();
+                }
+            }
         }
     }
 }
